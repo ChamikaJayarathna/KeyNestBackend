@@ -1,8 +1,13 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import User from "../schema/User.js";
 
 let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+
+const createToken = (_id) => {
+  return jwt.sign({ _id }, process.env.MY_SECRET_KEY, { expiresIn: "5d" });
+};
 
 export const register = async (req, res) => {
   const { username, email, password } = req.body;
@@ -22,12 +27,10 @@ export const register = async (req, res) => {
   }
 
   if (!passwordRegex.test(password)) {
-    return res
-      .status(403)
-      .json({
-        error:
-          "Password should be 6 to 20 characters long with a numeric, 1 lowercase and 1 uppercase letters",
-      });
+    return res.status(403).json({
+      error:
+        "Password should be 6 to 20 characters long with a numeric, 1 lowercase and 1 uppercase letters",
+    });
   }
 
   const hashpassword = await bcrypt.hash(password, 10);
@@ -48,6 +51,29 @@ export const register = async (req, res) => {
     });
 };
 
-export const login = async (req, res) => {};
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(403).json({ error: "Email not found" });
+    }
+
+    const validPassword = await bcrypt.compare(password, user.password);
+
+    if (!validPassword) {
+      return res.status(403).json({ error: "Invalid Password" });
+    }
+
+    const token = createToken(user._id);
+    res
+      .status(200)
+      .json({ message: "Login successfully", email, token, _id: user._id });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
 export const logout = (req, res) => {};
