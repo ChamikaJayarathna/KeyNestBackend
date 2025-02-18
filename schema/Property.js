@@ -5,6 +5,10 @@ const PropertySchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    images: {
+        type: String,
+        default: []
+    },
     address: {
         type: String,
         required: true
@@ -26,14 +30,6 @@ const PropertySchema = new mongoose.Schema({
         required: true,
         min: 1,
     },
-    latitude: {
-        type: String,
-        required: true
-    },
-    longitude: {
-        type: String,
-        required: true
-    },
     type: {
         type: String,
         enum: ["rent", "buy"],
@@ -41,7 +37,7 @@ const PropertySchema = new mongoose.Schema({
     },
     property: {
         type: String,
-        enum: ["apartment", "house", "condo", "land"],
+        enum: ["apartment", "house", "land"],
         required: true,
     },
     utilities: {
