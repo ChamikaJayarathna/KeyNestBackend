@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const PropertySchema = new mongoose.Schema({
     title: {
@@ -49,6 +49,11 @@ const PropertySchema = new mongoose.Schema({
         type: String,
         enum: ["allowed", "not-allowed"],
         required: true,
+    },
+    author: { 
+        type: Schema.Types.ObjectId, 
+        required: true,
+        ref: "user"
     },
 });
 

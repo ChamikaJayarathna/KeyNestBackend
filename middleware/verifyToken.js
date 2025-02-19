@@ -7,7 +7,7 @@ export const verifyToken = (req, res, next) => {
 
   jwt.verify(token, process.env.MY_SECRET_KEY, async (err, payload) => {
     if (err) return res.status(403).json({ message: "Token is not Valid!" });
-    req.userId = payload.id;
+    req.userId = payload._id; 
     next();
   });
 };
