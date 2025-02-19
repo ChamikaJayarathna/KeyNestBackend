@@ -1,7 +1,8 @@
 import Property from "../schema/Property.js";
 
-export const addPost = async (req, res) => {
+export const addProperty = async (req, res) => {
     const { title, images, address, description, price, city, bedroom, type, property, utilities, pet } = req.body;
+    const tokenUserId = req.userId;
 
     try {
 

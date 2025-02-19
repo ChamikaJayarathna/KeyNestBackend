@@ -68,6 +68,14 @@ export const login = async (req, res) => {
     }
 
     const token = createToken(user._id);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      maxAge: 5 * 24 * 60 * 60 * 1000, 
+    });
+
     res
       .status(200)
       .json({ message: "Login successfully", email, token, _id: user._id });

@@ -1,8 +1,9 @@
 import express from 'express';
-import { addPost } from '../controller/property-controller.js';
+import { addProperty } from '../controller/property-controller.js';
+import { verifyToken } from '../middleware/verifyToken.js';
 
 const router = express.Router();
 
-router.post('/create-property', addPost);
+router.post('/create-property', verifyToken, addProperty);
 
 export default router;

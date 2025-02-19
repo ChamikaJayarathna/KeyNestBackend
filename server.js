@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from "mongoose";
 import "dotenv/config";
+import cookieParser from "cookie-parser";
 import authRoute from './routes/auth-route.js';
 import propertyRoute from './routes/property-route.js';
 
@@ -16,6 +17,7 @@ mongoose.connect(process.env.DATABASE_URL)
 })
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use('/api/auth', authRoute);
 app.use('/api/property', propertyRoute);
