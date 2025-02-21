@@ -2,9 +2,9 @@ import express from 'express';
 import "dotenv/config";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import DBConnection from './config/dbconnection.js';
 import authRoute from './routes/auth-route.js';
 import propertyRoute from './routes/property-route.js';
-import DBConnection from './config/dbconnection.js';
 
 const app = express();
 const PORT = 3000;
