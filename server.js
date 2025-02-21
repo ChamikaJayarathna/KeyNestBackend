@@ -1,21 +1,14 @@
 import express from 'express';
-import mongoose from "mongoose";
 import "dotenv/config";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoute from './routes/auth-route.js';
 import propertyRoute from './routes/property-route.js';
+import DBConnection from './config/dbconnection.js';
 
 const app = express();
 const PORT = 3000;
-
-mongoose.connect(process.env.DATABASE_URL)
-.then(() => {
-    console.log("Connected to MongoDB");
-})
-.catch(err => {
-    console.log(err);
-})
+DBConnection();
 
 // app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(cors({
