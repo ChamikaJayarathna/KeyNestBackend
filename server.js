@@ -8,7 +8,6 @@ import propertyRoute from './routes/property-route.js';
 
 const app = express();
 const PORT = 3000;
-DBConnection();
 
 // app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(cors({
@@ -24,5 +23,6 @@ app.use('/api/auth', authRoute);
 app.use('/api/property', propertyRoute);
 
 app.listen(PORT, () => {
+    DBConnection();
     console.log(`Server is running on port ${PORT}`);
 });
