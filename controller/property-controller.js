@@ -16,7 +16,7 @@ export const addProperty = async (req, res) => {
       const newProperty = new Property({
         author: authorId,
         title,
-        images, // Store image URLs directly
+        images,
         address,
         description,
         price,
