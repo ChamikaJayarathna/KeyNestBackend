@@ -114,7 +114,9 @@ export const updateProperty = async (req, res) => {
     }
 
     if (existingProperty.author.toString() !== authorId) {
-      return res.status(403).json({ message: "Unauthorized to update this property" });
+      return res
+        .status(403)
+        .json({ message: "Unauthorized to update this property" });
     }
 
     const updatedProperty = await Property.findByIdAndUpdate(
@@ -136,6 +138,34 @@ export const updateProperty = async (req, res) => {
     );
 
     res.status(200).json(updatedProperty);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+export const deleteProperty = async (req, res) => {
+  const { id } = req.params;
+  let authorId = req.userId;
+
+  try {
+    if (!authorId) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    const existingProperty = await Property.findById(id);
+
+    if (!existingProperty) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+
+    if (existingProperty.author.toString() !== authorId) {
+      return res
+        .status(403)
+        .json({ message: "Unauthorized to delete this property" });
+    }
+
+    await Property.findByIdAndDelete(id);
+    res.status(200).json({ message: "Property deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
