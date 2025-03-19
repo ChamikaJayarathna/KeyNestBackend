@@ -170,3 +170,26 @@ export const deleteProperty = async (req, res) => {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
+
+export const searchProperty = async (req, res) => {
+  try {
+    const { query } = req.query;
+
+    if (!query) {
+      return res.status(400).json({ message: "Search query is required" });
+    }
+
+    const searchQuery = {
+      $or: [
+        { title: { $regex: query, $options: "i" } },
+        { city: { $regex: query, $options: "i" } },
+        { property: { $regex: query, $options: "i" } },
+      ],
+    };
+
+    const properties = await Property.find(searchQuery);
+    res.status(200).json(properties);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
