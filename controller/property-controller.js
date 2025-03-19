@@ -39,7 +39,7 @@ export const addProperty = async (req, res) => {
     pet,
     images,
   } = req.body;
-  let authorId = req.userId;
+  let authorId = req.user?._id;
 
   try {
     if (!authorId) {

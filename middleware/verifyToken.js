@@ -8,7 +8,7 @@ const verifyToken = (req, res, next) => {
         return res.status(401).json({ error: "No access token" });
     }
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    jwt.verify(token, process.env.MY_SECRET_KEY, (err, user) => {
         if (err) {
             return res.status(403).json({ error: "Access token is invalid" });
         }
