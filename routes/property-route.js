@@ -7,7 +7,7 @@ import {
   searchProperty,
   updateProperty,
 } from "../controller/property-controller.js";
-import { verifyToken } from "../middleware/verifyToken.js";
+import verifyToken from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
