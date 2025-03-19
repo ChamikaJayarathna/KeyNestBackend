@@ -100,7 +100,7 @@ export const updateProperty = async (req, res) => {
     pet,
     images,
   } = req.body;
-  let authorId = req.userId;
+  let authorId = req.user?._id;
 
   try {
     if (!authorId) {
@@ -145,7 +145,7 @@ export const updateProperty = async (req, res) => {
 
 export const deleteProperty = async (req, res) => {
   const { id } = req.params;
-  let authorId = req.userId;
+  let authorId = req.user?._id;
 
   try {
     if (!authorId) {
