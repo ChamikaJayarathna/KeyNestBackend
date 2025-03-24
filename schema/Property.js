@@ -55,6 +55,10 @@ const PropertySchema = new mongoose.Schema({
         required: true,
         ref: "user"
     },
+    features: { 
+        type: [[Number]],
+        default: []
+    }
 });
 
 export default mongoose.model('property', PropertySchema);
