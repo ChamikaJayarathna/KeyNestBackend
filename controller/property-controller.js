@@ -67,65 +67,40 @@ export const addProperty = async (req, res) => {
     res.status(201).json("Save listing successfully!");
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ error: "Server error, please try again later."});
+    return res
+      .status(500)
+      .json({ error: "Server error, please try again later." });
   }
 };
 
 export const updateProperty = async (req, res) => {
   const { id } = req.params;
-  const {
-    title,
-    address,
-    description,
-    price,
-    city,
-    bedroom,
-    type,
-    property,
-    utilities,
-    pet,
-    images,
-  } = req.body;
-  let authorId = req.user?._id;
 
   try {
-    if (!authorId) {
-      return res.status(401).json({ message: "User not authenticated" });
-    }
-
     const existingProperty = await Property.findById(id);
 
     if (!existingProperty) {
-      return res.status(404).json({ message: "Property not found" });
+      return res.status(404).json({ message: "Property listing not found" });
     }
 
-    if (existingProperty.author.toString() !== authorId) {
-      return res
-        .status(403)
-        .json({ message: "Unauthorized to update this property" });
-    }
+    const updatedProperty = await Property.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
-    const updatedProperty = await Property.findByIdAndUpdate(
-      id,
-      {
-        title,
-        images,
-        address,
-        description,
-        price,
-        city,
-        bedroom,
-        type,
-        property,
-        utilities,
-        pet,
-      },
-      { new: true }
-    );
-
-    res.status(200).json(updatedProperty);
+    res
+      .status(200)
+      .json({
+        message: "Property listing updated successfully!",
+        updatedProperty,
+      });
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error: error.message });
+    res
+      .status(500)
+      .json({
+        message: "Server error, please try again later.",
+        error: error.message,
+      });
   }
 };
 
