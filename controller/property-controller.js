@@ -45,32 +45,7 @@ export const addProperty = async (req, res) => {
   let authorId = req.user?._id;
 
   try {
-    if (!authorId) {
-      return res.status(401).json({ message: "User not authenticated" });
-    }
-
-    if (
-      !title ||
-      !address ||
-      !description ||
-      !price ||
-      !city ||
-      !bedroom ||
-      !bathroom ||
-      !latitude ||
-      !longitude ||
-      !type ||
-      !property ||
-      !utilities ||
-      !pet
-    ) {
-      return res
-        .status(400)
-        .json({ message: "All required fields must be filled" });
-    }
-
     const newProperty = new Property({
-      author: authorId,
       title,
       images,
       address,
@@ -85,12 +60,14 @@ export const addProperty = async (req, res) => {
       property,
       utilities,
       pet,
+      author: authorId,
     });
 
-    const savedProperty = await newProperty.save();
-    res.status(201).json(savedProperty);
+    await newProperty.save();
+    res.status(201).json("Save listing successfully!");
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error: error.message });
+    console.log(error);
+    return res.status(500).json({ error: "Server error, please try again later."});
   }
 };
 

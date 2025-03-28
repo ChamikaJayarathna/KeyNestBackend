@@ -45,7 +45,7 @@ const PropertySchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ["rent", "buy"],
+        enum: ["Rent", "Buy"],
         required: true
     },
     property: {
