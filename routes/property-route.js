@@ -4,6 +4,7 @@ import {
   deleteProperty,
   getAllProperties,
   getSingleProperty,
+  getUserProperties,
   searchProperty,
   updateProperty,
 } from "../controller/property-controller.js";
@@ -13,6 +14,7 @@ const router = express.Router();
 
 router.get("/get-all-property", getAllProperties);
 router.get("/get-single-property/:id", getSingleProperty);
+router.get("/get-user-properties/:userId", getUserProperties);
 router.post("/create-property", verifyToken, addProperty);
 router.post("/update-property/:id", verifyToken, updateProperty);
 router.post("/search-property", searchProperty);

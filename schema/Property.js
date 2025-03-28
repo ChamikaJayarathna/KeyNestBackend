@@ -30,6 +30,19 @@ const PropertySchema = new mongoose.Schema({
         required: true,
         min: 1,
     },
+    bathroom: {
+        type: Number,
+        required: true,
+        min: 1,
+    },
+    latitude: {
+        type: Number,
+        required: true,
+    },
+    longitude: {
+        type: Number,
+        required: true,
+    },
     type: {
         type: String,
         enum: ["rent", "buy"],
@@ -37,17 +50,17 @@ const PropertySchema = new mongoose.Schema({
     },
     property: {
         type: String,
-        enum: ["apartment", "house", "land"],
+        enum: ["Apartment", "House", "Land"],
         required: true,
     },
     utilities: {
         type: String,
-        enum: ["owner", "tenant", "shared"],
+        enum: ["Owner", "Tenant", "Shared"],
         required: true,
     },
     pet: {
         type: String,
-        enum: ["allowed", "not-allowed"],
+        enum: ["Allowed", "Not allowed"],
         required: true,
     },
     author: { 
