@@ -16,8 +16,8 @@ router.get("/get-all-property", getAllProperties);
 router.get("/get-single-property/:id", getSingleProperty);
 router.get("/get-user-properties", verifyToken, getUserProperties);
 router.post("/create-property", verifyToken, addProperty);
-router.post("/update-property/:id", verifyToken, updateProperty);
 router.post("/search-property", searchProperty);
+router.put("/update-property/:id", verifyToken, updateProperty);
 router.delete("/delete-property/:id", verifyToken, deleteProperty);
 
 export default router;
