@@ -105,10 +105,6 @@ export const deleteProperty = async (req, res) => {
   let authorId = req.user?._id;
 
   try {
-    if (!authorId) {
-      return res.status(401).json({ message: "User not authenticated" });
-    }
-
     const existingProperty = await Property.findById(id);
 
     if (!existingProperty) {
@@ -124,7 +120,7 @@ export const deleteProperty = async (req, res) => {
     await Property.findByIdAndDelete(id);
     res.status(200).json({ message: "Property deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error: error.message });
+    res.status(500).json({ error: "Server error, please try again later."});
   }
 };
 
