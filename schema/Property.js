@@ -72,6 +72,6 @@ const PropertySchema = new mongoose.Schema({
         type: [[Number]],
         default: []
     }
-});
+}, {timestamps: true });
 
 export default mongoose.model('property', PropertySchema);
