@@ -88,19 +88,15 @@ export const updateProperty = async (req, res) => {
       runValidators: true,
     });
 
-    res
-      .status(200)
-      .json({
-        message: "Property listing updated successfully!",
-        updatedProperty,
-      });
+    res.status(200).json({
+      message: "Property listing updated successfully!",
+      updatedProperty,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Server error, please try again later.",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Server error, please try again later.",
+      error: error.message,
+    });
   }
 };
 
@@ -156,19 +152,11 @@ export const searchProperty = async (req, res) => {
 };
 
 export const getUserProperties = async (req, res) => {
-  const { userId } = req.params;
-
   try {
-    const properties = await Property.find({ author: userId });
-
-    if (!properties || properties.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No properties found for this user" });
-    }
-
-    res.status(200).json(properties);
+    const userId = req.user?._id;
+    const userPropertyDetails = await Property.find({ author: userId });
+    return res.status(200).json(userPropertyDetails);
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error: error.message });
+    res.status(500).json({ error: "Server error, please try again later." });
   }
 };
