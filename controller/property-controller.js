@@ -34,12 +34,15 @@ export const addProperty = async (req, res) => {
     city,
     bedroom,
     bathroom,
+    carSpaces,
     latitude,
     longitude,
     type,
     property,
+    condition,
     utilities,
     pet,
+    filter,
     images,
   } = req.body;
   let authorId = req.user?._id;
@@ -54,12 +57,15 @@ export const addProperty = async (req, res) => {
       city,
       bedroom,
       bathroom,
+      carSpaces,
       latitude,
       longitude,
       type,
       property,
+      condition,
       utilities,
       pet,
+      filter,
       author: authorId,
     });
 
