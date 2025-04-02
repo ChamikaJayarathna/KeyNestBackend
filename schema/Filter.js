@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const FilterSchema = new new mongoose.Schema({
+const FilterSchema = new mongoose.Schema({
   outdoorFeatures: {
     swimmingPool: {
       type: Boolean,
