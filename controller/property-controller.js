@@ -65,7 +65,7 @@ export const addProperty = async (req, res) => {
       condition,
       utilities,
       pet,
-      filter,
+      filter: filter || {},
       author: authorId,
     });
 
