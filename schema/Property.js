@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import FilterSchema from './Filter.js'
 
 const PropertySchema = new mongoose.Schema({
     title: {
@@ -35,6 +36,9 @@ const PropertySchema = new mongoose.Schema({
         required: true,
         min: 1,
     },
+    carSpaces : {
+        type: Number,
+    },
     latitude: {
         type: Number,
         required: true,
@@ -45,13 +49,17 @@ const PropertySchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ["Rent", "Buy"],
+        enum: ["Rent", "Buy", "Sell"],
         required: true
     },
     property: {
         type: String,
-        enum: ["Apartment", "House", "Land"],
+        enum: ["Apartment", "House", "Land", "Townhouse", "Villa", "RetirementLiving", "Acreage", "Rural"],
         required: true,
+    },
+    condition: {
+        type: String,
+        enum: ["New", "Established"]
     },
     utilities: {
         type: String,
@@ -62,6 +70,10 @@ const PropertySchema = new mongoose.Schema({
         type: String,
         enum: ["Allowed", "Not allowed"],
         required: true,
+    },
+    filter:{
+        type: FilterSchema,
+        default: () => ({})
     },
     author: { 
         type: Schema.Types.ObjectId, 
