@@ -248,11 +248,44 @@ export const filterProperties = async (req, res) => {
     res.status(200).json(properties);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        message: "Server error, please try again later.",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Server error, please try again later.",
+      error: error.message,
+    });
+  }
+};
+
+export const filterByPropertyType = async (req, res) => {
+  try {
+    const { property } = req.body;
+
+    if (!property) {
+      return res.status(400).json({ message: "Property type is required" });
+    }
+
+    const validTypes = [
+      "Apartment",
+      "House",
+      "Land",
+      "Townhouse",
+      "Villa",
+      "Retirement Living",
+      "Acreage",
+      "Rural",
+    ];
+
+    if (!validTypes.includes(property)) {
+      return res.status(400).json({ message: "Invalid property type" });
+    }
+
+    const properties = await Property.find({ property });
+
+    res.status(200).json(properties);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Server error, please try again later.",
+      error: error.message,
+    });
   }
 };

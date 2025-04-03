@@ -2,6 +2,7 @@ import express from "express";
 import {
   addProperty,
   deleteProperty,
+  filterByPropertyType,
   filterProperties,
   getAllProperties,
   getSingleProperty,
@@ -19,6 +20,7 @@ router.get("/get-user-properties", verifyToken, getUserProperties);
 router.post("/filter-property", filterProperties);
 router.post("/create-property", verifyToken, addProperty);
 router.post("/search-property", searchProperty);
+router.post("/filter-property-type", filterByPropertyType);
 router.put("/update-property/:id", verifyToken, updateProperty);
 router.delete("/delete-property/:id", verifyToken, deleteProperty);
 
