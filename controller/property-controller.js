@@ -232,15 +232,7 @@ export const filterProperties = async (req, res) => {
     if (bedroom) query.bedroom = { $gte: Number(bedroom) };
     if (bathroom) query.bathroom = { $gte: Number(bathroom) };
     if (carSpaces) query.carSpaces = { $gte: Number(carSpaces) };
-
-    if (price) {
-      const [minPrice, maxPrice] = price.split("-").map(Number);
-      if (!isNaN(minPrice) && !isNaN(maxPrice)) {
-        query.price = { $gte: minPrice, $lte: maxPrice };
-      } else if (!isNaN(minPrice)) {
-        query.price = { $gte: minPrice };
-      }
-    }
+    if (price) query.price = { $lte: Number(price) };
 
     if (filter) {
       Object.keys(filter).forEach((category) => {
