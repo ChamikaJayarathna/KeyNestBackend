@@ -126,7 +126,7 @@ export const deleteProperty = async (req, res) => {
     await Property.findByIdAndDelete(id);
     res.status(200).json({ message: "Property deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Server error, please try again later."});
+    res.status(500).json({ error: "Server error, please try again later." });
   }
 };
 
@@ -160,5 +160,107 @@ export const getUserProperties = async (req, res) => {
     return res.status(200).json(userPropertyDetails);
   } catch (error) {
     res.status(500).json({ error: "Server error, please try again later." });
+  }
+};
+
+export const filterProperties = async (req, res) => {
+  try {
+    const {
+      price,
+      bedroom,
+      bathroom,
+      carSpaces,
+      condition,
+      transactionType,
+      propertyTypes,
+      filter,
+    } = req.body;
+    const query = {};
+
+    const filterMapping = {
+      transactionType: "type",
+      propertyTypes: "property",
+      condition: "condition",
+    };
+
+    const transactionTypeMapping = {
+      rent: "Rent",
+      buy: "Buy",
+      sell: "Sell",
+    };
+
+    const propertyTypeMapping = {
+      apartment: "Apartment",
+      house: "House",
+      land: "Land",
+      townhouse: "Townhouse",
+      villa: "Villa",
+      retirementLiving: "Retirement Living",
+      acreage: "Acreage",
+      rural: "Rural",
+    };
+
+    const conditionMapping = {
+      new: "New",
+      established: "Established",
+    };
+
+    const selectedTransactionTypes = Object.keys(transactionType || {})
+      .filter((key) => transactionType[key])
+      .map((key) => transactionTypeMapping[key]);
+
+    const selectedPropertyTypes = Object.keys(propertyTypes || {})
+      .filter((key) => propertyTypes[key])
+      .map((key) => propertyTypeMapping[key]);
+
+    const selectedConditions = Object.keys(condition || {})
+      .filter((key) => condition[key])
+      .map((key) => conditionMapping[key]);
+
+    if (selectedTransactionTypes.length > 0) {
+      query[filterMapping.transactionType] = { $in: selectedTransactionTypes };
+    }
+
+    if (selectedPropertyTypes.length > 0) {
+      query[filterMapping.propertyTypes] = { $in: selectedPropertyTypes };
+    }
+
+    if (selectedConditions.length > 0) {
+      query[filterMapping.condition] = { $in: selectedConditions };
+    }
+
+    if (bedroom) query.bedroom = { $gte: Number(bedroom) };
+    if (bathroom) query.bathroom = { $gte: Number(bathroom) };
+    if (carSpaces) query.carSpaces = { $gte: Number(carSpaces) };
+
+    if (price) {
+      const [minPrice, maxPrice] = price.split("-").map(Number);
+      if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+        query.price = { $gte: minPrice, $lte: maxPrice };
+      } else if (!isNaN(minPrice)) {
+        query.price = { $gte: minPrice };
+      }
+    }
+
+    if (filter) {
+      Object.keys(filter).forEach((category) => {
+        Object.keys(filter[category]).forEach((feature) => {
+          if (filter[category][feature]) {
+            query[`filter.${category}.${feature}`] = true;
+          }
+        });
+      });
+    }
+
+    const properties = await Property.find(query);
+    res.status(200).json(properties);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({
+        message: "Server error, please try again later.",
+        error: error.message,
+      });
   }
 };
