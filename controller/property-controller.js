@@ -289,3 +289,14 @@ export const filterByPropertyType = async (req, res) => {
     });
   }
 };
+
+export const getTotalPropertyListingCount = async (req, res) => {
+  try {
+    const totalPropertyCount = (await Property.countDocuments()) || 0;
+    return res.status(200).json({ count: totalPropertyCount });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "Server error, please try again later." });
+  }
+};
