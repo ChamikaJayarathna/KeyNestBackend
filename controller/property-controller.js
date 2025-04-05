@@ -300,3 +300,17 @@ export const getTotalPropertyListingCount = async (req, res) => {
       .json({ error: "Server error, please try again later." });
   }
 };
+
+export const getUserTotalPropertyListingCount = async (req, res) => {
+  try {
+    const userId = req.user?._id;
+    const totalPropertyCount = await Property.countDocuments({
+      author: userId,
+    });
+    return res.status(200).json({ count: totalPropertyCount });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "Server error, please try again later." });
+  }
+};

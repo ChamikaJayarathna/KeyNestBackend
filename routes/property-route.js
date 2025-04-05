@@ -8,6 +8,7 @@ import {
   getSingleProperty,
   getTotalPropertyListingCount,
   getUserProperties,
+  getUserTotalPropertyListingCount,
   searchProperty,
   updateProperty,
 } from "../controller/property-controller.js";
@@ -19,6 +20,7 @@ router.get("/get-all-property", getAllProperties);
 router.get("/get-single-property/:id", getSingleProperty);
 router.get("/get-user-properties", verifyToken, getUserProperties);
 router.get("/get-total-property-count", getTotalPropertyListingCount);
+router.get("/get-user-total-property-count", verifyToken, getUserTotalPropertyListingCount);
 router.post("/filter-property", filterProperties);
 router.post("/create-property", verifyToken, addProperty);
 router.post("/search-property", searchProperty);
