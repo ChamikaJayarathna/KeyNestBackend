@@ -98,3 +98,45 @@ export const getUserCount = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
+export const editUserDetails = async (req, res) => {
+  const { id } = req.params;
+  const { username, password } = req.body;
+
+  if (username && username.length < 3) {
+    return res
+      .status(403)
+      .json({ error: "Username must be at least 3 letters long" });
+  }
+
+  if (password && !passwordRegex.test(password)) {
+    return res.status(403).json({
+      error:
+        "Password should be 6 to 20 characters long with a numeric, 1 lowercase and 1 uppercase letters",
+    });
+  }
+
+  try {
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (username) {
+      user.username = username;
+    }
+
+    if (password) {
+      user.password = await bcrypt.hash(password, 10);
+    }
+
+    await user.save();
+
+    return res
+      .status(200)
+      .json({ message: "User details updated successfully", user });
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+};
