@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../schema/User.js";
+import Property from "../schema/Property.js";
 
 let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
@@ -138,5 +139,38 @@ export const editUserDetails = async (req, res) => {
       .json({ message: "User details updated successfully", user });
   } catch (error) {
     res.status(500).json({ error: "Server error" });
+  }
+};
+
+export const getOwnersProfileDetail = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const propertyListing = await Property.findById(id);
+
+    if (!propertyListing) {
+      return res.status(404).json({ error: "Property listing not found." });
+    }
+
+    if (!propertyListing.author) {
+      return res
+        .status(404)
+        .json({ error: "Property has no associated owner." });
+    }
+
+    const ownerProfile = await User.findById(propertyListing.author).select(
+      "-password"
+    );
+
+    if (!ownerProfile) {
+      return res.status(404).json({ error: "Owner profile not found." });
+    }
+
+    return res.status(200).json(ownerProfile);
+  } catch (error) {
+    console.error("Error in getOwnersProfileDetail:", error);
+    return res
+      .status(500)
+      .json({ error: "Server error, please try again later." });
   }
 };

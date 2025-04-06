@@ -1,6 +1,7 @@
 import express from "express";
 import {
   editUserDetails,
+  getOwnersProfileDetail,
   getProfile,
   getUserCount,
   login,
@@ -12,6 +13,7 @@ const router = express.Router();
 
 router.get("/profile/:id", getProfile);
 router.get("/get-user-count", getUserCount);
+router.get("/get-owner-profile/:id", getOwnersProfileDetail);
 router.post("/register", register);
 router.post("/login", login);
 router.put("/edit-user/:id", verifyToken, editUserDetails);
