@@ -314,3 +314,23 @@ export const getUserTotalPropertyListingCount = async (req, res) => {
       .json({ error: "Server error, please try again later." });
   }
 };
+
+export const getPropertyTypeCount = async (req, res) => {
+  try {
+    const propertyTypeCounts = await Property.aggregate([
+      { $group: { _id: "$property", count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+    ]);
+
+    const result = propertyTypeCounts.map((entry) => ({
+      property: entry._id || "Unknown",
+      count: entry.count,
+    }));
+
+    return res.status(200).json(result);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "Server error, please try again later." });
+  }
+};

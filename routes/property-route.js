@@ -5,6 +5,7 @@ import {
   filterByPropertyType,
   filterProperties,
   getAllProperties,
+  getPropertyTypeCount,
   getSingleProperty,
   getTotalPropertyListingCount,
   getUserProperties,
@@ -21,6 +22,7 @@ router.get("/get-single-property/:id", getSingleProperty);
 router.get("/get-user-properties", verifyToken, getUserProperties);
 router.get("/get-total-property-count", getTotalPropertyListingCount);
 router.get("/get-user-total-property-count", verifyToken, getUserTotalPropertyListingCount);
+router.get("/get-property-type-count", getPropertyTypeCount);
 router.post("/filter-property", filterProperties);
 router.post("/create-property", verifyToken, addProperty);
 router.post("/search-property", searchProperty);
