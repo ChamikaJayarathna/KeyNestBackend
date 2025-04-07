@@ -1,21 +1,21 @@
 import mongoose, { Schema } from "mongoose";
 
 const chatSchema = new Schema({
-  users: {
+  users: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
-  },
-  userIDs: {
+  }],
+  userIDs: [{
     type: mongoose.Schema.Types.ObjectId,
-  },
-  seenBy: {
+  }],
+  seenBy: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user'
-  },
-  messages: {
+  }],
+  messages: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'message'
-  },
+  }],
   lastMessage: {
     type: String,
   },
