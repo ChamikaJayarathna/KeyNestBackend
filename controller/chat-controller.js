@@ -36,6 +36,42 @@ export const getChats = async (req, res) => {
   }
 };
 
+export const getChat = async (req, res) => {
+  const tokenUserId = req.userId;
+  const chatId = req.params.id;
+
+  try {
+    const chat = await Chat.findOne({
+      _id: chatId,
+      userIDs: tokenUserId,
+    })
+      .populate({
+        path: "users",
+        select: "_id username profile_img",
+      })
+      .populate({
+        path: "messages",
+        options: { sort: { createdAt: 1 } },
+      });
+
+    if (!chat) {
+      return res
+        .status(404)
+        .json({ message: "Chat not found or unauthorized." });
+    }
+
+    if (!chat.seenBy.includes(tokenUserId)) {
+      chat.seenBy.push(tokenUserId);
+      await chat.save();
+    }
+
+    res.status(200).json(chat);
+  } catch (err) {
+    console.error("Error getting chat:", err);
+    res.status(500).json({ message: "Failed to get chat!" });
+  }
+};
+
 export const addChat = async (req, res) => {
   const tokenUserId = req.userId;
   const receiverId = req.body.receiverId;
@@ -66,5 +102,31 @@ export const addChat = async (req, res) => {
   } catch (err) {
     console.error("Error adding chat:", err);
     res.status(500).json({ message: "Failed to add chat!" });
+  }
+};
+
+export const readChat = async (req, res) => {
+  const tokenUserId = req.userId;
+  const chatId = req.params.id;
+
+  try {
+    const chat = await Chat.findOne({
+      _id: chatId,
+      userIDs: tokenUserId,
+    });
+
+    if (!chat) {
+      return res
+        .status(404)
+        .json({ message: "Chat not found or unauthorized." });
+    }
+
+    chat.seenBy = [tokenUserId];
+    await chat.save();
+
+    res.status(200).json(chat);
+  } catch (err) {
+    console.error("Error marking chat as read:", err);
+    res.status(500).json({ message: "Failed to mark chat as read!" });
   }
 };
