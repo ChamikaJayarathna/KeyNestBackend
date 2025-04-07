@@ -2,7 +2,7 @@ import Chat from "../schema/Chat.js";
 import User from "../schema/User.js";
 
 export const getChats = async (req, res) => {
-  const tokenUserId = req.userId;
+  const tokenUserId = req.user._id;
 
   try {
     const chats = await Chat.find({
@@ -37,7 +37,7 @@ export const getChats = async (req, res) => {
 };
 
 export const getChat = async (req, res) => {
-  const tokenUserId = req.userId;
+  const tokenUserId = req.user._id;
   const chatId = req.params.id;
 
   try {
@@ -78,7 +78,7 @@ export const addChat = async (req, res) => {
 
   try {
     const existingChat = await Chat.findOne({
-      userIDs: { $all: [tokenUserId, receiverId] },
+      userIDs: { $in: [tokenUserId, receiverId] },
       userIDs: { $size: 2 },
     });
 
@@ -104,6 +104,7 @@ export const addChat = async (req, res) => {
     res.status(500).json({ message: "Failed to add chat!" });
   }
 };
+
 
 export const readChat = async (req, res) => {
   const tokenUserId = req.userId;
