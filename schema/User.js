@@ -25,7 +25,14 @@ const UserSchema = new mongoose.Schema({
         default: () => {
             return `https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=${profile_imgs_name_list[Math.floor(Math.random() * profile_imgs_name_list.length)]}`
         }
-    }
+    },
+    chats: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "chat",
+    }],
+    chatIDs: [{
+        type: mongoose.Schema.Types.ObjectId,
+    }]
 })
 
 export default mongoose.model('user', UserSchema);
