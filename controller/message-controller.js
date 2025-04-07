@@ -2,7 +2,7 @@ import Message from "../schema/Message.js";
 import Chat from "../schema/Chat.js";
 
 export const addMessage = async (req, res) => {
-  const tokenUserId = req.userId;
+  const tokenUserId = req.user._id;
   const chatId = req.params.chatId;
   const text = req.body.text;
 
@@ -18,7 +18,7 @@ export const addMessage = async (req, res) => {
 
     const message = new Message({
       text,
-      chatId,
+      chat: chatId,
       userId: tokenUserId,
     });
 
