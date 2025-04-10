@@ -20,6 +20,10 @@ app.use('/api/property', propertyRoute);
 app.use('/api/chat', chatRoute);
 app.use('/api/message', messageRoute);
 
+app.get("/test", (req, res) => {
+    res.send("API is working!");
+});
+
 app.listen(PORT, () => {
     DBConnection();
     console.log(`Server is running on port ${PORT}`);
