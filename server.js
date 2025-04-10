@@ -20,7 +20,7 @@ app.use('/api/property', propertyRoute);
 app.use('/api/chat', chatRoute);
 app.use('/api/message', messageRoute);
 
-app.get("/test", (req, res) => {
+app.get("/api/test", (req, res) => {
     res.send("API is working!");
 });
 
