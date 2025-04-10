@@ -15,10 +15,10 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
-app.use('/auth', authRoute);
-app.use('/property', propertyRoute);
-app.use('/chat', chatRoute);
-app.use('/message', messageRoute);
+app.use('/api/auth', authRoute);
+app.use('/api/property', propertyRoute);
+app.use('/api/chat', chatRoute);
+app.use('/api/message', messageRoute);
 
 app.get("/test", (req, res) => {
     res.send("API is working!");
